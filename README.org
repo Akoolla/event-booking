@@ -1,0 +1,8 @@
+
+
+
+*TODO
+** Rename project and stuff sometime to actual project name
+** Some function to create unique ID's for new screening based on film name and screening date time
+** Store film date as an instant - will also need conversion back to clj-time local date time again in get-by-id method
+** Some clojure script to hide/show screening meta data on add depending on type of screening
