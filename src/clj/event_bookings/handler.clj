@@ -13,11 +13,17 @@
              [java-time :as t]))
 
 (def datetime-fmt "yyyy-MM-dd'T'HH:mm")
+(def date-fmt "yyyy-MM-dd")
 
 (defn format-date-time
   "String date in format yyyy-dd-MM'T'HH:mm to java-time/local-date-time"
   [str-date]
   (t/zoned-date-time (t/local-date-time datetime-fmt str-date) 0))
+
+(defn format-date
+  "String date in format 2020-01-23"
+  [str-date]
+  (t/zoned-date-time (t/local-date date-fmt str-date) 0))
 
 (defroutes admin-routes
   (GET "/screening/add" [] (screenings/add))
@@ -26,18 +32,19 @@
                          :film-rating (:rating params)
                          :film-length (:length params)
                          :film-country (:country params)
-                         :film-date (:release-date params)
+                         :film-date (format-date (:release-date params))
                          :film-description (:description params)
                          :date (format-date-time (:date params))
                          :allow-bookings (:allowbookings params)
                          :max-seats (:max-seats params)
                          :max-wheelchairs (:wheel-chairs params)
-                         :id "slug"}]
+                         :id "the-levelling-23-09-2017-19-30"}]
+          (println screening)
           (store/create-screening screening)
-          (screenings/screening-list))))
+          (screenings/screening-list (store/list-all-screenings)))))
 
 (defroutes screening-routes
-  (GET "/" [] (screenings/screening-list)))
+  (GET "/" [] (screenings/screening-list (store/list-all-screenings))))
 
 (defroutes app-routes
   admin-routes

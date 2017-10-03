@@ -2,10 +2,10 @@
   (:require [hiccup.page :as h]
             [event-bookings.view.common :refer :all]))
 
-(defn screening
-  []
+(defn sc
+  [screening]
   [:li.list-group-item
-   [:h4.list-group-item-heading "The Levelling (15) UK 2017 83 mins"]
+   [:h4.list-group-item-heading (first screening)]
    [:h5.list-group-item-heading "Friday, September.29 8:30PM"]
    [:p
     [:span.label.label-success "Seats Left" [:span.badge 32]]
@@ -17,11 +17,12 @@
 
 
 (defn screening-list
-  []
+  [screenings]
   (bootstrap-page
    {:title "Screenings"}
    [:div.list-group
-   (screening)]
+    (for [screening screenings]
+      (sc screening))]
    [:div
     [:p#clickable "Click me!"]
     [:script {:src "/js/cljs.js"}]]))
