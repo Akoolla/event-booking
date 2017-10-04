@@ -16,9 +16,11 @@
 (def date-fmt "yyyy-MM-dd")
 
 (defn format-date-time
-  "String date in format yyyy-dd-MM'T'HH:mm to java-time/local-date-time"
+  "String date in format yyyy-dd-MM'T'HH:mm to java-time/zoned--date-time (UTC)"
   [str-date]
-  (t/zoned-date-time (t/local-date-time datetime-fmt str-date) 0))
+  (-> (t/local-date-time datetime-fmt str-date)
+      (t/zoned-date-time 0)
+      (t/with-zone "UTC")))
 
 (defn format-date
   "String date in format 2020-01-23"
@@ -28,20 +30,18 @@
 (defroutes admin-routes
   (GET "/screening/add" [] (screenings/add))
   (POST "/screening/add" {params :params}
-        (let [screening {:film-name (:name params)
-                         :film-rating (:rating params)
-                         :film-length (:length params)
-                         :film-country (:country params)
-                         :film-date (format-date (:release-date params))
-                         :film-description (:description params)
+        (let [screening {:film {:name (:name params)
+                                :rating (:rating params)
+                                :length (:length params)
+                                :country (:country params)
+                                :date (format-date (:release-date params))
+                                :description (:description params)}
                          :date (format-date-time (:date params))
                          :allow-bookings (:allowbookings params)
                          :max-seats (:max-seats params)
-                         :max-wheelchairs (:wheel-chairs params)
-                         :id "the-levelling-23-09-2017-19-30"}]
-          (println screening)
+                         :max-wheelchairs (:max-wheelchairs params)}]
           (store/create-screening screening)
-          (screenings/screening-list (store/list-all-screenings)))))
+          (screenings/screening-list (vals (store/list-all-screenings))))))
 
 (defroutes screening-routes
   (GET "/" [] (screenings/screening-list (vals (store/list-all-screenings)))))

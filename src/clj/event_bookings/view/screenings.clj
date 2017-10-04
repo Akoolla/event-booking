@@ -1,28 +1,43 @@
 (ns event-bookings.view.screenings
   (:require [hiccup.page :as h]
             [event-bookings.view.common :refer :all]
-            [clojure.string :refer [join]]))
+            [clojure.string :refer [join]]
+            [java-time :as t]))
+
+(defn- screening-date
+  [screening-date]
+  (join ", " [(.getDisplayName
+               (t/day-of-week screening-date)
+               (java.time.format.TextStyle/FULL)
+               (java.util.Locale/UK))
+
+              (join "." [(.getDisplayName
+                          (t/month screening-date)
+                          (java.time.format.TextStyle/FULL)
+                          (java.util.Locale/UK))
+
+                         (t/as screening-date :day-of-week)])
+
+              (t/format "h:mm a" screening-date)]))
 
 (defn sc
   [screening]
-  [:li.list-group-item
-   ;;Their Finest (15) UK 2016 90 mins
-   [:h4.list-group-item-heading
-    (join " " [(:film-name screening)
-               (join "" ["(" (:film-rating screening) ")"])
-               (:film-country screening)
-               (:film-date screening)
-               (:film-length screening)
-               "mins"])]
-   [:h5.list-group-item-heading "Friday, September.29 8:30PM"]
-   [:p
-    [:span.label.label-success "Seats Left" [:span.badge 32]]
-    "&nbsp;"
-    [:span.label.label-success "Wheelchair spaces" [:span.badge 32]]]
-   [:a {:href "blah"
-        :role "button"
-        :class "btn btn-primary btn-xs"} "Make Booking"]])
-
+  (let [film (:film screening)]
+    [:li.list-group-item
+     [:h4.list-group-item-heading
+      (join " " [(:name film)
+                 (join "" ["(" (:rating film) ")"])
+                 (:country film)
+                 (t/as (:date film) :year)
+                 (:length film) "mins"])]
+     [:h5.list-group-item-heading (screening-date (:date screening))]
+     [:p
+      [:span.label.label-success "Seats Left" [:span.badge (:max-seats screening)]]
+      "&nbsp;"
+      [:span.label.label-success "Wheelchair spaces" [:span.badge (:max-wheelchairs screening)]]]
+     [:a {:href "blah"
+          :role "button"
+          :class "btn btn-primary btn-xs"} "Make Booking"]]))
 
 (defn screening-list
   [screenings]
@@ -75,7 +90,7 @@
         [:div.col-sm-6
          [:div.form-group
           [:label {:for "description"} "Description"]
-          [:textarea.form-control]]]]
+          [:textarea.form-control {:id "description" :name "description"}]]]]
         
        [:div.row
         [:div.col-sm-3
