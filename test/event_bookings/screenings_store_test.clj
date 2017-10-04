@@ -17,7 +17,7 @@
                    :id "the-levelling-2017-02-26-19-30"}
         screening (store/create-screening screening)
         screening (store/get-by-id "the-levelling-2017-02-26-19-30")
-        screenigns (store/list-all)]
+        screenigns (store/list-all-screenings)]
     (testing "List of screenigns"
       (is (not(nil? screenigns))))
 

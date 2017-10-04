@@ -1,11 +1,19 @@
 (ns event-bookings.view.screenings
   (:require [hiccup.page :as h]
-            [event-bookings.view.common :refer :all]))
+            [event-bookings.view.common :refer :all]
+            [clojure.string :refer [join]]))
 
 (defn sc
   [screening]
   [:li.list-group-item
-   [:h4.list-group-item-heading (first screening)]
+   ;;Their Finest (15) UK 2016 90 mins
+   [:h4.list-group-item-heading
+    (join " " [(:film-name screening)
+               (join "" ["(" (:film-rating screening) ")"])
+               (:film-country screening)
+               (:film-date screening)
+               (:film-length screening)
+               "mins"])]
    [:h5.list-group-item-heading "Friday, September.29 8:30PM"]
    [:p
     [:span.label.label-success "Seats Left" [:span.badge 32]]
@@ -26,7 +34,6 @@
    [:div
     [:p#clickable "Click me!"]
     [:script {:src "/js/cljs.js"}]]))
-
 
 (defn add
   []

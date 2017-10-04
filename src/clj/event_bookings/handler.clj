@@ -44,7 +44,7 @@
           (screenings/screening-list (store/list-all-screenings)))))
 
 (defroutes screening-routes
-  (GET "/" [] (screenings/screening-list (store/list-all-screenings))))
+  (GET "/" [] (screenings/screening-list (vals (store/list-all-screenings)))))
 
 (defroutes app-routes
   admin-routes

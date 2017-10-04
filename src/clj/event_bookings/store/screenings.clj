@@ -7,7 +7,7 @@
   ;; a map from user-id to user details, each being a map of attributes
   (enduro/file-atom
    {}
-   (str env/storage-directory "screenings.edn")))(
+   (str env/storage-directory "screenings.edn")))
 
 (defn- format-date
   [expiry]
@@ -34,4 +34,10 @@
              screening (assoc screening :film-date (format-date (:film-date screening)))]
          (assoc screenings id screening)))))
 
-(defn list-all-screenings []
+(defn list-all-screenings
+  []
+  (let [screenings {}]
+    (reduce (fn [accum screening]
+              (assoc accum (first screening) (second screening)))
+            screenings
+            (deref storage))))
