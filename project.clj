@@ -16,9 +16,8 @@
                  [org.webjars/bootswatch-paper "3.3.5+4"]
 
                  [alandipert/enduro "1.2.0"]
-                 [clojure.java-time "0.3.0"]
-
-                 [clj-time "0.14.0"]
+                 [slugger "1.0.1"]
+                 [clojure.java-time "0.3.1"]
 
                  [environ "1.1.0"]]
   

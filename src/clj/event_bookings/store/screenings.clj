@@ -1,6 +1,7 @@
 (ns event-bookings.store.screenings
   (:require [alandipert.enduro :as enduro]
             [event-bookings.store.env :as env]
+            [event-bookings.slugs :as slugger]
             [java-time :as t]))
    
 (def storage
@@ -15,12 +16,23 @@
     (t/to-java-date expiry)
     expiry))
 
+(defn- read-dates-concern
+  [screening]
+  (assoc screening
+         :date (t/zoned-date-time (:date screening) 0)
+         :film-date (t/zoned-date-time (:film-date screening) 0)))
+
+(defn create-id
+  "Creats a unique id for the screening based on film.name and screening date"
+  [screening])
+
 (defn get-by-id
   "Check out make id function for id format"
   [id]
   (let [screening (get @storage id)
-        screening (assoc screening :date (t/zoned-date-time (:date screening) 0))
-        screening (assoc screening :film-date (t/zoned-date-time (:film-date screening) 0))]
+        screening (assoc screening
+                         :date (t/zoned-date-time (:date screening) 0)
+                         :film-date (t/zoned-date-time (:film-date screening) 0))]
    screening))
 
 (defn create-screening
@@ -28,16 +40,19 @@
   (enduro/swap!
      storage
      (fn [screenings]
-       (let [;;TODO id should be made based on film-screening-date-time
-             id (:id screening)
-             screening (assoc screening :date (format-date (:date screening)))
-             screening (assoc screening :film-date (format-date (:film-date screening)))]
+       (let [id (slugger/make-screening-slug (:film-name screening) (:date screening))
+             screening (assoc screening
+                              :date (format-date (:date screening))
+                              :film-date (format-date (:film-date screening))
+                              :id id)]
          (assoc screenings id screening)))))
 
 (defn list-all-screenings
   []
   (let [screenings {}]
     (reduce (fn [accum screening]
-              (assoc accum (first screening) (second screening)))
+              (let [id (first screening)
+                    screening (read-dates-concern (second screening))]
+                (assoc accum id screening)))
             screenings
             (deref storage))))

@@ -1,20 +1,38 @@
 (ns event-bookings.view.screenings
   (:require [hiccup.page :as h]
             [event-bookings.view.common :refer :all]
-            [clojure.string :refer [join]]))
+            [clojure.string :refer [join]]
+            [java-time :as t]))
+
+(defn- screening-date
+  [screening-date]
+  (join ", " [(.getDisplayName
+               (t/day-of-week screening-date)
+               (java.time.format.TextStyle/FULL)
+               (java.util.Locale/UK))
+
+              (join "." [
+                          (.getDisplayName
+                           (t/month screening-date)
+                           (java.time.format.TextStyle/FULL)
+                           (java.util.Locale/UK))
+
+                          (.getValue
+                           (t/day-of-week screening-date))])
+
+              "8:30PM"
+             ]))
 
 (defn sc
   [screening]
   [:li.list-group-item
-   ;;Their Finest (15) UK 2016 90 mins
    [:h4.list-group-item-heading
     (join " " [(:film-name screening)
                (join "" ["(" (:film-rating screening) ")"])
                (:film-country screening)
-               (:film-date screening)
-               (:film-length screening)
-               "mins"])]
-   [:h5.list-group-item-heading "Friday, September.29 8:30PM"]
+               (t/format "yyyy" (:film-date screening))
+               (:film-length screening) "mins"])]
+   [:h5.list-group-item-heading (screening-date (:date screening))]
    [:p
     [:span.label.label-success "Seats Left" [:span.badge 32]]
     "&nbsp;"
