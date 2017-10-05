@@ -5,12 +5,12 @@
             [event-bookings.slugs :as slugs]))
 
 (deftest can-store-and-retrieve
-  (let [screening {:film-name "The Levelling"
-                   :film-rating "PG"
-                   :film-length 120
-                   :film-country "USA"
-                   :film-date (t/zoned-date-time (t/local-date) 0)
-                   :film-description "Some longer text"
+  (let [screening {:film {:name "The Levelling"
+                          :rating "PG"
+                          :length 120
+                          :country "USA"
+                          :date (t/zoned-date-time (t/local-date) 0)
+                          :description "Some longer text"}
                    :date (t/zoned-date-time (t/local-date-time "yyyy-MM-dd'T'HH:mm" "2020-02-26T19:30") 0)
                    :allow-bookings true
                    :max-seats 32

@@ -20,9 +20,16 @@
 
               (t/format "h:mm a" screening-date)]))
 
+(defn seats-available-style
+  "Style should be danger if not seats free, amber of 20% available or green for over 20%"
+  [booked-spaces max-spaces]
+  (join " " ["label" "label-success"]))
+
 (defn sc
   [screening]
-  (let [film (:film screening)]
+  (let [film (:film screening)
+        wheel-chair-style (seats-available-style 10 10)
+        seats-style (seats-available-style 10 10)]
     [:li.list-group-item
      [:h4.list-group-item-heading
       (join " " [(:name film)
@@ -32,9 +39,9 @@
                  (:length film) "mins"])]
      [:h5.list-group-item-heading (screening-date (:date screening))]
      [:p
-      [:span.label.label-success "Seats Left" [:span.badge (:max-seats screening)]]
+      [:span {:class seats-style} "Seats Left&nbsp;&nbsp;" [:span.badge (:max-seats screening)]]
       "&nbsp;"
-      [:span.label.label-success "Wheelchair spaces" [:span.badge (:max-wheelchairs screening)]]]
+      [:span.label.label-success "Wheelchair spaces&nbsp;&nbsp;" [:span.badge (:max-wheelchairs screening)]]]
      [:a {:href "blah"
           :role "button"
           :class "btn btn-primary btn-xs"} "Make Booking"]]))
