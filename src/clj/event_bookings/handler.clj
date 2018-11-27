@@ -9,7 +9,8 @@
 
              [event-bookings.view.screenings :as screenings]
              [event-bookings.store.screenings :as store]
-
+             [event-bookings.view.booking :as booking]
+             
              [java-time :as t]))
 
 (def datetime-fmt "yyyy-MM-dd'T'HH:mm")
@@ -44,7 +45,8 @@
           (screenings/screening-list (vals (store/list-all-screenings))))))
 
 (defroutes screening-routes
-  (GET "/" [] (screenings/screening-list (vals (store/list-all-screenings)))))
+  (GET "/" [] (screenings/screening-list (vals (store/list-all-screenings))))
+  (GET "/booking" [] (booking/booking)))
 
 (defroutes app-routes
   admin-routes
