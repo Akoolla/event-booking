@@ -3,9 +3,9 @@
 
 Written using Clojure and Clojurescript, uses an edn file for datastorage rather than requiring a database. 
 
-* Requires
-- [Leiningen](https://leiningen.org/)
-- Java 1.8
+## Requires
+* [Leiningen](https://leiningen.org/)
+* Java 1.8
 
-* To start the application as a standalone
+## Running the application
 lein ring server
