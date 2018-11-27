@@ -8,4 +8,4 @@ Written using Clojure and Clojurescript, uses an edn file for datastorage rather
 * Java 1.8
 
 ## Running the application
-lein ring server
+Type `lein ring server` from the command-line, application should start and be avaiable at [http://localhost:3000/](LocalHost)
