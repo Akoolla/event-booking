@@ -44,6 +44,7 @@
           (screenings/screening-list (vals (store/list-all-screenings))))))
 
 (defroutes screening-routes
+  (route/resources "/" {:root "public"})
   (GET "/" [] (screenings/screening-list (vals (store/list-all-screenings)))))
 
 (defroutes app-routes
