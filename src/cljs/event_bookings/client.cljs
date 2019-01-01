@@ -1,10 +1,15 @@
-(ns hello-clojurescript)
+(ns event-bookings.client)
 
-(defn handle-click []
-  (js/alert "Hello!"))
+(enable-console-print!)
 
-(def clickable (.getElementById js/document "clickable"))
-(.addEventListener clickable "click" handle-click)
+(println "This is the client")
 
-(def show-seating (.getElementById js/document "allowbookings"))
-(.addEventListener show-seating "click" handle-click)
+;; define your app data so that it doesn't get over-written on reload
+
+(defonce app-state (atom {:text "Hello world!"}))
+
+(defn on-js-reload []
+  ;; optionally touch your app-state to force rerendering depending on
+  ;; your application
+  ;; (swap! app-state update-in [:__figwheel_counter] (fnil inc 0))
+)

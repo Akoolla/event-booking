@@ -45,8 +45,9 @@
           (screenings/screening-list (vals (store/list-all-screenings))))))
 
 (defroutes screening-routes
+  (route/resources "/" {:root "public"})
   (GET "/" [] (screenings/screening-list (vals (store/list-all-screenings))))
-  (GET "/booking" [] (booking/booking)))
+  (GET "/book/:slug" [slug] (booking/booking slug)))
 
 (defroutes app-routes
   admin-routes

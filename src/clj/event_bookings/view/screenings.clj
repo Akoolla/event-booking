@@ -42,7 +42,7 @@
       [:span {:class seats-style} "Seats Left&nbsp;&nbsp;" [:span.badge (:max-seats screening)]]
       "&nbsp;"
       [:span.label.label-success "Wheelchair spaces&nbsp;&nbsp;" [:span.badge (:max-wheelchairs screening)]]]
-     [:a {:href "/booking"
+     [:a {:href (join "/" [ "book" (:id screening)])
           :role "button"
           :class "btn btn-primary btn-xs"} "Make Booking"]]))
 

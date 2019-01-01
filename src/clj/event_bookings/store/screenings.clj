@@ -24,10 +24,6 @@
          :date (t/zoned-date-time (:date screening) 0)
          :film (assoc film :date (t/zoned-date-time (:date film) 0)))))
 
-(defn create-id
-  "Creats a unique id for the screening based on film.name and screening date"
-  [screening])
-
 (defn get-by-id
   "Check out make id function for id format"
   [id]
