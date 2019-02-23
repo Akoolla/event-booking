@@ -7,9 +7,7 @@
   (testing "number-of-seats"
     (let [screening (s/new 28 2)]
       (is (= 28 (s/free-seats screening)))
-      (is (= 2 (s/free-wheelchairs screening)))
-      )))
-
+      (is (= 2 (s/free-wheelchairs screening))))))
 
 (deftest can-get-calculate-free-seats
   (testing "something"
