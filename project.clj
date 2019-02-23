@@ -28,7 +28,8 @@
 
   :plugins [[lein-figwheel "0.5.10-SNAPSHOT"]
             [lein-cljsbuild "1.1.5" :exclusions [[org.clojure/clojure]]]
-            [lein-ring "0.9.7"]]
+            [lein-ring "0.9.7"]
+            [lein-auto "0.1.3"]]
 
   :source-paths ["src/clj/", "src/cljs"]
   :ring {:handler event-bookings.handler/app}
