@@ -11,15 +11,23 @@
 
 (deftest can-get-calculate-free-seats
     (let [booking (booking/new "email" 2 2 )
-          screening (s/make-booking booking (s/new 32 2))]
+          screening (:screening (s/make-booking booking (s/new 32 2)))]
 
       (testing "screening-with-one-booking"
         (is (= 30 (s/free-seats screening))))
       
-      (let [screening (s/make-booking
+      (let [screening (:screening (s/make-booking
                        (booking/new "email2" 2 0)
-                       screening)]
+                       screening))]
 
         (testing "screening-with-2-bookings"
           (is (= 28 (s/free-seats screening)))))))
+
+(deftest making-a-booking-should-return-tuple-of-bookingref-and-screening
+  (let [booking-result (s/make-booking
+                        (booking/new "email1" 2 0)
+                        (s/new 32 2))]
+  (testing "booking result has booking-id"
+    (some? (:booking-id booking-result)))))
+  
   
