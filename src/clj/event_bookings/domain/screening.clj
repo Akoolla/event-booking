@@ -19,8 +19,7 @@
   (- (:max-wheelchairs screening) 0))
 
 (defn make-booking [booking screening]
-  ;; TODO: Add booking to list
   (assoc screening :bookings
          (assoc (:bookings screening)
                 (make-booking-id booking) booking)))
-;; TODO: Loging to test when adding booking there are enough seats)
+;; TODO: Logic to test when adding booking there are enough seats)
