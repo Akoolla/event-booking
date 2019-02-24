@@ -19,7 +19,10 @@
   (- (:max-wheelchairs screening) 0))
 
 (defn make-booking [booking screening]
-  (assoc screening :bookings
-         (assoc (:bookings screening)
-                (make-booking-id booking) booking)))
+  (let [booking-id (make-booking-id booking)
+        screening (assoc screening :bookings
+                         (assoc (:bookings screening)
+                                booking-id booking))]
+    {:booking-id booking-id
+     :screening screening}))
 ;; TODO: Logic to test when adding booking there are enough seats)
