@@ -18,11 +18,19 @@
 (defn free-wheelchairs [screening]
   (- (:max-wheelchairs screening) 0))
 
+(defn validate-booking [screening booking]
+  (let [problems []]
+    (if (>= (free-seats screening) (:seats booking))
+      problems
+      (conj problems "Not enough seats available"))))
+
 (defn make-booking [booking screening]
-  (let [booking-id (make-booking-id booking)
-        screening (assoc screening :bookings
-                         (assoc (:bookings screening)
-                                booking-id booking))]
-    {:booking-id booking-id
-     :screening screening}))
+  (if-let [problems (not-empty (validate-booking screening booking))]
+    problems
+    (let [booking-id (make-booking-id booking)
+          screening (assoc screening :bookings
+                           (assoc (:bookings screening)
+                                  booking-id booking))]
+      {:booking-id booking-id
+       :screening screening})))
 ;; TODO: Logic to test when adding booking there are enough seats)

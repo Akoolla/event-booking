@@ -32,5 +32,14 @@
 
   (testing "booking result has screening"
     (some? (:screening booking-result)))))
-  
+
+(deftest validate-booking-seats
+  (let [screening (s/new 32 2)]
+    (testing "Show problem if to many seats booked"
+      (let [booking (booking/new "email" 32 2)]
+        (some? (s/validate-booking screening booking))))
+
+    (testing "Show no problems if enough seats free for booking"
+      (let [booking (booking/new "email" 2 0)]
+        (empty? (s/validate-booking screening booking))))))
   
